@@ -65,9 +65,12 @@ chapterRouter.get("/find-chapter/notebooks", auth, async (req, res) => {
 
 chapterRouter.post("/delete-chapter/:chapterId", auth, async (req, res) => {
   try {
+    console.log("HI");
     const { chapterId } = req.params;
     let chapter = await Chapter.findByIdAndDelete(chapterId);
+    res.json(chapter);
   } catch (error) {
+    res.json(error);
     console.log(`Failed to delete chapter: ${error}`);
   }
 });

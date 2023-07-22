@@ -64,6 +64,7 @@ authRouter.post("/verify-token", async (req, res) => {
 });
 
 authRouter.get("/", auth, async (req, res) => {
+  console.log("Token Verified555");
   const user = await User.findById(req.user);
   res.json({ ...user._doc, token: req.token });
   // console.log("This is req_user_info:" + res);
