@@ -15,7 +15,6 @@ noteRouter.post("/add_note/update_note", auth, async (req, res) => {
     let existingNote = id != "" ? await Note.findById(id) : "";
     let topicIds = existingNote ? existingNote.topicIds : [];
     console.log("topicIds: " + topicIds);
-
     // console.log("existingNote: " + existingNote);
     if (existingNote) {
       const updatedNote = await Note.findOneAndUpdate(
@@ -58,26 +57,6 @@ noteRouter.get("/get-all-notes/:id", auth, async (req, res) => {
   }
 });
 
-// noteRouter.post("/update-note/:id", auth, async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { title, content, ownerId, date } = req.body;
-//     const filter = { _id: id };
-//     const options = { new: true };
-//     const update = {
-//       title: title,
-//       content: content,
-//       ownerId: ownerId,
-//     };
-//     let doc = await Note.FindOneAndUpdate(filter, update, options);
-//     doc = await doc.save();
-//     console.log(`Updated Note: ${doc}`);
-//     res.json(doc);
-//   } catch (error) {
-//     console.log("Could not update Note: " + e);
-//   }
-// });
-
 noteRouter.post("/add-to-chapter/:noteId", auth, async (req, res) => {
   try {
     const { noteId } = req.params;
@@ -92,18 +71,9 @@ noteRouter.post("/add-to-chapter/:noteId", auth, async (req, res) => {
     if (chapter) {
       if (note) {
         await note.topicIds.push(chapter._id);
-        // await  chapter.chapterNotes.push({ note });
-        // res.json(chapter);
       } else {
         console.log("Note does not exist");
       }
-
-      // for (let o = 0; o < chapter.chapterNotes.length; o++) {
-      //   if (chapter.chapterNotes[o].note._id.equals(note._id)) {
-      //     noteExist = true;
-      //   }
-      // }
-
       chapter.chapterNotes.forEach((chapterNote) => {
         if (chapterNote.note._id.equals(note._id)) {
           noteExist = true;
