@@ -63,14 +63,14 @@ chapterRouter.get("/find-chapter/notebooks", auth, async (req, res) => {
   }
 });
 
-// chapterRouter.post("/delete-chapter/:chapterId", auth, async (req, res) => {
-//   try {
-//     const { chapterId } = req.params;
-//     let chapter = await Chapter.findByIdAndDelete(chapterId);
-//   } catch (error) {
-//     console.log(`Failed to delete chapter: ${error}`);
-//   }
-// });
+chapterRouter.post("/delete-chapter/:chapterId", auth, async (req, res) => {
+  try {
+    const { chapterId } = req.params;
+    let chapter = await Chapter.findByIdAndDelete(chapterId);
+  } catch (error) {
+    console.log(`Failed to delete chapter: ${error}`);
+  }
+});
 
 // chapterRouter.get("/get-chapters", async (req, res) => {});
 module.exports = chapterRouter;
