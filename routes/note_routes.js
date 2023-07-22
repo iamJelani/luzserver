@@ -1,6 +1,3 @@
-// const update = { $push: { chapterNotes: { note: { $each: [note] } } } };
-// const update = { $push: { chapterNotes: { note: [note] } } };
-// const update = { $push: { chapterNotes: [note] } };
 const express = require("express");
 const auth = require("../middlewere.js/auth");
 const { Chapter } = require("../models/chapter");
@@ -70,7 +67,13 @@ noteRouter.post("/add-to-chapter/:noteId", auth, async (req, res) => {
 
     if (chapter) {
       if (note) {
-        await note.topicIds.push(chapter._id);
+        note.topicIds.forEach(async (topicId) => {
+          if (topicId.equals(chapter._id)) {
+            console.log("Already Contains ID");
+          } else {
+            await note.topicIds.push(chapter._id);
+          }
+        });
       } else {
         console.log("Note does not exist");
       }
