@@ -78,7 +78,8 @@ chapterRouter.post("/delete-chapter/:chapterId", auth, async (req, res) => {
 
 chapterRouter.post("/create-note/chapter", auth, async (req, res) => {
   try {
-    const { chapterId, noteTitle, noteContent, ownerId, noteId } = req.body;
+    const { chapterId, noteTitle, noteContent, ownerId, noteId, date } =
+      req.body;
     let findNote = noteId != "" ? Note.findById(noteId) : "";
     let topicIds = findNote ? findNote.topicIds : [];
     let chapter = Chapter.findById(chapterId[0]);
@@ -88,6 +89,7 @@ chapterRouter.post("/create-note/chapter", auth, async (req, res) => {
         topicIds: chapterId,
         ownerId: ownerId,
         content: noteContent,
+        date: date,
       });
       await note.save();
       if (chapter) {
