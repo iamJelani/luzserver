@@ -107,6 +107,7 @@ chapterRouter.post("/create-note/chapter", auth, async (req, res) => {
       );
 
       for (const topicId of topicIds) {
+        console.log(`Check topic ID: ${topicId}`);
         let chapter = await Chapter.findById({ topicId });
         if (chapter && chapter.chapterNotes) {
           let chapterNoteIndex = await chapter.chapterNotes.findIndex(

@@ -21,7 +21,14 @@ app.use(noteRouter);
 
 //Connections
 mongoose
-  .connect(DB)
+  .connect(
+    DB
+    //   {
+    //   // connectTimeoutMS: 30000,
+    //   // useNewUrlParser: true,
+    //   // useUnifiedTopology: true,
+    // }
+  )
   .then(() => {
     console.log("Ready");
   })
