@@ -72,14 +72,14 @@ noteRouter.post("/add-to-chapter/:noteId", auth, async (req, res) => {
           console.log("Topic ID is []");
           await note.topicIds.push(chapter._id);
         } else {
-          note.topicIds.forEach(async (topicId) => {
-            console.log("Loop id: " + topicId);
-            if (topicId.equals(chapter._id)) {
-              console.log("Already contains the id for this chapter");
-            } else {
-              await note.topicIds.push(chapter._id);
-            }
-          });
+          if (!note.topicIds.includes(chapter._id)) {
+            note.topicIds.push(chapter._id);
+            await note.save();
+          } else {
+            console.log(
+              "Note already contains this chapter's ID therefore no ID was assigned to it."
+            );
+          }
         }
       } else {
         console.log("Note does not exist");
