@@ -64,6 +64,7 @@ noteRouter.post("/add-to-chapter/:noteId", auth, async (req, res) => {
     let noteExist = false;
     console.log("TopicIdLog: " + note.topicIds);
     console.log("ChapterIdLog: " + chapter._id);
+    console.log("Note: " + note);
 
     if (chapter) {
       if (note) {
