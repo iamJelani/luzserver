@@ -93,7 +93,7 @@ chapterRouter.post("/create-note/chapter", auth, async (req, res) => {
       });
       await note.save();
       if (chapter) {
-        await chapter.chapterNotes.push({ note });
+        chapter.chapterNotes.push({ note });
         await chapter.save();
       } else {
         console.log("Could not find chapter");
