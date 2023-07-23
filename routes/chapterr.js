@@ -108,7 +108,7 @@ chapterRouter.post("/create-note/chapter", auth, async (req, res) => {
 
       for (const topicId of topicIds) {
         console.log(`Check topic ID: ${topicId}`);
-        let chapter = await Chapter.findById({ topicId });
+        let chapter = await Chapter.findById(topicId);
         if (chapter && chapter.chapterNotes) {
           let chapterNoteIndex = await chapter.chapterNotes.findIndex(
             (note) => note.note._id.toString() === noteId
@@ -128,7 +128,7 @@ chapterRouter.post("/create-note/chapter", auth, async (req, res) => {
       res.json(updatedNote);
     }
   } catch (error) {
-    console.log(`failed to create note in chapter: ${error}`);
+    console.log(`Failed to create note in chapter: ${error}`);
   }
 });
 
