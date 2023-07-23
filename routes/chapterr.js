@@ -98,7 +98,7 @@ chapterRouter.post("/create-note/chapter", auth, async (req, res) => {
       } else {
         console.log("Could not find chapter or chapterNote");
       }
-      res.json("New note has been created");
+      res.json(note);
     } else {
       const updatedNote = await Note.findOneAndUpdate(
         { _id: noteId },
@@ -120,7 +120,7 @@ chapterRouter.post("/create-note/chapter", auth, async (req, res) => {
             await chapter.save();
           }
         } else {
-          console.log(`Could not find chapter or chapterNotes for $topicId`);
+          console.log(`Could not find chapter or chapterNotes for ${topicId}`);
         }
       }
 
