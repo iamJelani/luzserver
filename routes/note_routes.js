@@ -62,8 +62,8 @@ noteRouter.post("/add-to-chapter/:noteId", auth, async (req, res) => {
     let chapter = await Chapter.findOne({ _id: chapId });
     let note = await Note.findById(noteId);
     let noteExist = false;
-    console.log("TopicId: " + topicId);
-    console.log("ChapterId: " + chapId);
+    console.log("TopicIdLog: " + note.topicIds);
+    console.log("ChapterIdLog: " + chapter._id);
 
     if (chapter) {
       if (note) {
