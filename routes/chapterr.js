@@ -23,7 +23,7 @@ chapterRouter.post("/add-chapter", async (req, res) => {
 
 chapterRouter.get("/all-chapters/me", auth, async (req, res) => {
   try {
-    const user = User.findById(req.user);
+    const user = await User.findById(req.user);
     let chapters = await Chapter.find({ userId: req.user });
     // console.log(chapters);
     res.json(chapters);
@@ -43,7 +43,7 @@ chapterRouter.get("/find-chapter/notebooks", auth, async (req, res) => {
     console.log("ChapterId:" + chapterId);
     console.log("noteId:" + noteId);
 
-    Chapter.findOneAndUpdate(
+    await Chapter.findOneAndUpdate(
       { "note.id": noteId },
       {
         $set: {
@@ -80,9 +80,9 @@ chapterRouter.post("/create-note/chapter", auth, async (req, res) => {
   try {
     const { chapterId, noteTitle, noteContent, ownerId, noteId, date } =
       req.body;
-    let findNote = noteId != "" ? Note.findById(noteId) : "";
+    let findNote = noteId != "" ? await Note.findById(noteId) : "";
     let topicIds = findNote ? findNote.topicIds : [];
-    let chapter = Chapter.findById(chapterId[0]);
+    let chapter = await Chapter.findById(chapterId[0]);
     if (!findNote) {
       let note = new Note({
         title: noteTitle,
@@ -92,32 +92,35 @@ chapterRouter.post("/create-note/chapter", auth, async (req, res) => {
         date: date,
       });
       await note.save();
-      if (chapter) {
+      if (chapter && chapterNotes) {
         chapter.chapterNotes.push({ note });
         await chapter.save();
       } else {
-        console.log("Could not find chapter");
+        console.log("Could not find chapter or chapterNote");
       }
       res.json("New note has been created");
     } else {
-      const updatedNote = Note.findOneAndUpdate(
+      const updatedNote = await Note.findOneAndUpdate(
         { _id: noteId },
-        { content: noteContent },
-        { title: noteTitle },
+        { $set: { content: noteContent, title: noteTitle } },
         { new: true }
       );
 
       for (const topicId of topicIds) {
-        let chapter = Chapter.findById({ topicId });
-        let chapterNoteIndex = chapter.chapterNotes.findIndex(
-          (note) => note.note._id.toString() === noteId
-        );
-        console.log(`Note index in chapNote is: ${chapterNoteIndex}`);
+        let chapter = await Chapter.findById({ topicId });
+        if (chapter && chapter.chapterNotes) {
+          let chapterNoteIndex = await chapter.chapterNotes.findIndex(
+            (note) => note.note._id.toString() === noteId
+          );
+          console.log(`Note index in chapNote: ${chapterNoteIndex}`);
 
-        if (chapterNoteIndex > -1) {
-          chapter.chapterNotes[chapter].note.title = noteTitle;
-          chapter.chapterNotes[chapter].note.content = noteContent;
-          await chapter.save();
+          if (chapterNoteIndex > -1) {
+            chapter.chapterNotes[chapterNoteIndex].note.title = noteTitle;
+            chapter.chapterNotes[chapterNoteIndex].note.content = noteContent;
+            await chapter.save();
+          }
+        } else {
+          console.log(`Could not find chapter or chapterNotes for $topicId`);
         }
       }
 

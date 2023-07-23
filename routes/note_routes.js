@@ -16,7 +16,7 @@ noteRouter.post("/add_note/update_note", auth, async (req, res) => {
     if (existingNote) {
       const updatedNote = await Note.findOneAndUpdate(
         { _id: id },
-        { title, content },
+        { $set: { content, title } },
         { new: true }
       );
 
