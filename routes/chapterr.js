@@ -92,7 +92,7 @@ chapterRouter.post("/create-note/chapter", auth, async (req, res) => {
         date: date,
       });
       await note.save();
-      if (chapter && chapterNotes) {
+      if (chapter && chapter.chapterNotes) {
         chapter.chapterNotes.push({ note });
         await chapter.save();
       } else {
