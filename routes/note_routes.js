@@ -69,6 +69,7 @@ noteRouter.post("/add-to-chapter/:noteId", auth, async (req, res) => {
     if (chapter) {
       if (note) {
         if (note.topicIds.length == 0) {
+          console.log("Topic ID is []");
           await note.topicIds.push(chapter._id);
         } else {
           note.topicIds.forEach(async (topicId) => {
