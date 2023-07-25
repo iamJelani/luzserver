@@ -121,7 +121,12 @@ noteRouter.post("/notes/delete-note", auth, async (req, res) => {
               (note) => note.note._id.toString() === id
             );
             if (noteIndex > -1) {
-              noteChapter.chaperNotes.splice(noteIndex, 1);
+              if (Array.isArray(noteChapter.chapterNotes)) {
+                noteChapter.chapterNotes.splice(noteIndex, 1);
+                await noteChapter.save();
+              } else {
+                console.log("`chapterNotes` is not an array");
+              }
               await noteChapter.save();
             } else {
               ("Could not get index of note in chapter notes");
