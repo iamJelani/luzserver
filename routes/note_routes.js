@@ -107,4 +107,40 @@ noteRouter.post("/add-to-chapter/:noteId", auth, async (req, res) => {
   }
 });
 
+noteRouter.post("/notes/delete-note", auth, async (req, res) => {
+  try {
+    const { id } = req.body;
+    let noteCulprit = await Note.findById(id);
+    //Detele from chapter
+    if (noteCulprit) {
+      if (noteCulprit.topicIds) {
+        for (const topicId of noteCulprit.topicIds) {
+          let noteChapter = await Chapter.findById(topicId);
+          if (noteChapter) {
+            let noteIndex = noteChapter.chapterNotes.findIndex(
+              (note) => note.note._id.toString() === id
+            );
+            if (noteIndex > -1) {
+              noteChapter.chaperNotes.splice(noteIndex, 1);
+              await noteChapter.save();
+            } else {
+              ("Could not get index of note in chapter notes");
+            }
+          }
+        }
+      } else {
+        console.log("This note does not belong to any chapter");
+      }
+      // Delete from all note
+      const notes = await Note.findByIdAndDelete(id);
+      await notes.save();
+      res.json(notes);
+    } else {
+      console.log("Could not find note culprit");
+    }
+  } catch (error) {
+    console.log(`Could not complete the delete operation ${error}`);
+  }
+});
+
 module.exports = noteRouter;
