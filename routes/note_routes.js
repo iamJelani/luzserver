@@ -127,7 +127,6 @@ noteRouter.post("/notes/delete-note", auth, async (req, res) => {
               } else {
                 console.log("`chapterNotes` is not an array");
               }
-              await noteChapter.save();
             } else {
               ("Could not get index of note in chapter notes");
             }
@@ -138,7 +137,6 @@ noteRouter.post("/notes/delete-note", auth, async (req, res) => {
       }
       // Delete from all note
       const notes = await Note.findByIdAndDelete(id);
-      await notes.save();
       res.json(notes);
     } else {
       console.log("Could not find note culprit");
