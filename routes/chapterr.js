@@ -5,7 +5,7 @@ const { User } = require("../models/user");
 const { Note } = require("../models/notes");
 const chapterRouter = express.Router();
 
-chapterRouter.post("/add-chapter", async (req, res) => {
+chapterRouter.post("/add-chapter", auth, async (req, res) => {
   try {
     const { userId, subject, image, chapterNote } = req.body;
     let chapter = new Chapter({

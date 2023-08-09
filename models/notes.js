@@ -1,12 +1,18 @@
 const { default: mongoose } = require("mongoose");
 
 const noteSchema = mongoose.Schema({
+  _id: {
+    type: Number,
+    required: true,
+  },
   title: {
     type: String,
     required: true,
     trim: true,
   },
-  content: [{}],
+  content: {
+    type: String,
+  },
   ownerId: {
     type: String,
     required: true,

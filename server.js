@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const chapterRouter = require("./routes/chapterr");
 const authRouter = require("./routes/auth_route");
 const noteRouter = require("./routes/note_routes");
-
+const syncRouter = require("./routes/sync_script");
 //Init
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -18,17 +18,11 @@ app.use(express.json());
 app.use(chapterRouter);
 app.use(authRouter);
 app.use(noteRouter);
+app.use(syncRouter);
 
 //Connections
 mongoose
-  .connect(
-    DB
-    //   {
-    //   // connectTimeoutMS: 30000,
-    //   // useNewUrlParser: true,
-    //   // useUnifiedTopology: true,
-    // }
-  )
+  .connect(DB)
   .then(() => {
     console.log("Ready");
   })

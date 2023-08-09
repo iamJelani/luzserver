@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 const { noteSchema } = require("./notes");
 const chapterSchema = mongoose.Schema({
+  _id: {
+    type: Number,
+    required: true,
+  },
   subject: {
     type: String,
     required: true,
@@ -18,9 +22,9 @@ const chapterSchema = mongoose.Schema({
     required: true,
   },
   chapterNotes: [
-    {
-      note: noteSchema,
-    },
+    // {
+    //   note: noteSchema,
+    // },
   ],
 });
 
